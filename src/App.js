@@ -31,19 +31,26 @@ const App = () => {
 
   const toggleImportance = (note) => {
     const changedNote = { ...note, important: !note.important }
-    noteService.update(note.id, changedNote).then((returnedNote) => {
-      setNotes(
-        // Question: I want to replace the setNotes(*code*) to setNotes([]). And I expect React to reload the whole page since the state has changed, everything should re-render. Am I right?
-        notes.map((x) => {
-          if (x.id === note.id) {
-            // I had problem here. I never return things damn
-            return returnedNote
-          } else {
-            return x
-          }
-        })
-      )
-    })
+    noteService
+      .update(note.id, changedNote)
+      .then((returnedNote) => {
+        setNotes(
+          // Question: I want to replace the setNotes(*code*) to setNotes([]). And I expect React to reload the whole page since the state has changed, everything should re-render. Am I right?
+          notes.map((x) => {
+            if (x.id === note.id) {
+              // I had problem here. I never return things damn
+              return returnedNote
+            } else {
+              return x
+            }
+          })
+        )
+      })
+      // catch method was added but i don't why it is talking about deleting and that too in when we should be talking about updating.
+      .catch((error) => {
+        alert(`the note ${note.content} was already deleted from server`)
+        setNotes(notes.filter((n) => n.id !== note.id))
+      })
   }
 
   const handleNoteChange = (event) => {
