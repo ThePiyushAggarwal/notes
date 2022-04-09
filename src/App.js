@@ -19,6 +19,7 @@ const App = () => {
     const noteObject = {
       content: newNote,
       date: new Date(),
+      // this line sets a random true or false value to important
       important: Math.random() > 0.5,
     }
 
@@ -26,6 +27,25 @@ const App = () => {
       setNotes(notes.concat(noteObject))
       setNewNote('')
     })
+  }
+
+  const toggleImportance = (note) => {
+    const changedNote = { ...note, important: !note.important }
+    axios
+      .put(`http://localhost:3002/notes/${note.id}`, changedNote)
+      .then((response) => {
+        setNotes(
+          // Question: I want to replace the setNotes(*code*) to setNotes([]). And I expect React to reload the whole page since the state has changed, everything should re-render. Am I right?
+          notes.map((x) => {
+            if (x.id === note.id) {
+              // I had problem here. I never return things damn
+              return response.data
+            } else {
+              return x
+            }
+          })
+        )
+      })
   }
 
   const handleNoteChange = (event) => {
@@ -44,7 +64,11 @@ const App = () => {
       </div>
       <ul>
         {notesToShow.map((note) => (
-          <Note key={note.id} note={note} />
+          <Note
+            key={note.id}
+            note={note}
+            toggleImportance={() => toggleImportance(note)}
+          />
         ))}
       </ul>
       <Form
