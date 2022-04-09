@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Note from './components/Note'
 import Form from './components/Form'
+import noteService from './services/notes'
 
 const App = () => {
   const [notes, setNotes] = useState([])
@@ -9,8 +9,8 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
 
   useEffect(() => {
-    axios.get('http://localhost:3002/notes').then((response) => {
-      setNotes(response.data)
+    noteService.getAll().then((initialNotes) => {
+      setNotes(initialNotes)
     })
   }, [])
 
@@ -23,29 +23,27 @@ const App = () => {
       important: Math.random() > 0.5,
     }
 
-    axios.post('http://localhost:3002/notes', noteObject).then((response) => {
-      setNotes(notes.concat(noteObject))
+    noteService.create(noteObject).then((returnedNote) => {
+      setNotes(notes.concat(returnedNote))
       setNewNote('')
     })
   }
 
   const toggleImportance = (note) => {
     const changedNote = { ...note, important: !note.important }
-    axios
-      .put(`http://localhost:3002/notes/${note.id}`, changedNote)
-      .then((response) => {
-        setNotes(
-          // Question: I want to replace the setNotes(*code*) to setNotes([]). And I expect React to reload the whole page since the state has changed, everything should re-render. Am I right?
-          notes.map((x) => {
-            if (x.id === note.id) {
-              // I had problem here. I never return things damn
-              return response.data
-            } else {
-              return x
-            }
-          })
-        )
-      })
+    noteService.update(note.id, changedNote).then((returnedNote) => {
+      setNotes(
+        // Question: I want to replace the setNotes(*code*) to setNotes([]). And I expect React to reload the whole page since the state has changed, everything should re-render. Am I right?
+        notes.map((x) => {
+          if (x.id === note.id) {
+            // I had problem here. I never return things damn
+            return returnedNote
+          } else {
+            return x
+          }
+        })
+      )
+    })
   }
 
   const handleNoteChange = (event) => {
