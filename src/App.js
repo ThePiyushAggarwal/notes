@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react'
 import Note from './components/Note'
 import Form from './components/Form'
 import noteService from './services/notes'
+import Notification from './components/Notification'
+import Footer from './components/Footer'
 
 const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('some error....')
 
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
@@ -46,9 +49,14 @@ const App = () => {
           })
         )
       })
-      // catch method was added but i don't why it is talking about deleting and that too in when we should be talking about updating.
+      // catch method was added but i don't why it is talking about deleting and that too in when we should be talking about updating. Can't just understand the lines after this
       .catch((error) => {
-        alert(`the note ${note.content} was already deleted from server`)
+        setErrorMessage(
+          `Note ${note.content} was already removed from the server`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         setNotes(notes.filter((n) => n.id !== note.id))
       })
   }
@@ -62,6 +70,7 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all'}
@@ -81,6 +90,7 @@ const App = () => {
         addNote={addNote}
         newNote={newNote}
       />
+      <Footer />
     </div>
   )
 }

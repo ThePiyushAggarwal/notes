@@ -4,7 +4,7 @@
       "id": 1,
       "content": "HTML is easy",
       "date": "2022-1-17T17:30:31.098Z",
-      "important": false
+      "important": true
     },
     {
       "id": 2,
@@ -45,7 +45,7 @@
     {
       "content": "good",
       "date": "2022-04-09T06:14:02.958Z",
-      "important": false,
+      "important": true,
       "id": 8
     },
     {
@@ -59,66 +59,6 @@
       "date": "2022-04-09T06:14:41.272Z",
       "important": false,
       "id": 10
-    },
-    {
-      "content": "why",
-      "date": "2022-04-09T06:28:46.911Z",
-      "important": false,
-      "id": 11
-    },
-    {
-      "content": "were some ",
-      "date": "2022-04-09T06:28:50.383Z",
-      "important": false,
-      "id": 12
-    },
-    {
-      "content": "marked ",
-      "date": "2022-04-09T06:28:53.911Z",
-      "important": false,
-      "id": 13
-    },
-    {
-      "content": "as",
-      "date": "2022-04-09T08:43:24.853Z",
-      "important": true,
-      "id": 14
-    },
-    {
-      "content": "6456",
-      "date": "2022-04-09T08:44:35.436Z",
-      "important": true,
-      "id": 15
-    },
-    {
-      "content": "dfadfasd",
-      "date": "2022-04-09T08:44:39.558Z",
-      "important": false,
-      "id": 16
-    },
-    {
-      "content": "ad",
-      "date": "2022-04-09T08:44:45.602Z",
-      "important": false,
-      "id": 17
-    },
-    {
-      "content": "haha",
-      "date": "2022-04-09T08:49:23.396Z",
-      "important": false,
-      "id": 18
-    },
-    {
-      "content": "asd",
-      "date": "2022-04-09T08:56:27.597Z",
-      "important": false,
-      "id": 19
-    },
-    {
-      "content": "asdfa",
-      "date": "2022-04-09T09:45:59.794Z",
-      "important": false,
-      "id": 20
     }
   ]
 }
