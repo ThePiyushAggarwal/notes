@@ -9,7 +9,7 @@ const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
-  const [errorMessage, setErrorMessage] = useState('some error....')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
@@ -17,6 +17,7 @@ const App = () => {
     })
   }, [])
 
+  //
   const addNote = (event) => {
     event.preventDefault()
     const noteObject = {
@@ -32,33 +33,19 @@ const App = () => {
     })
   }
 
-  const toggleImportance = (note) => {
-    const changedNote = { ...note, important: !note.important }
-    noteService
-      .update(note.id, changedNote)
-      .then((returnedNote) => {
-        setNotes(
-          // Question: I want to replace the setNotes(*code*) to setNotes([]). And I expect React to reload the whole page since the state has changed, everything should re-render. Am I right?
-          notes.map((x) => {
-            if (x.id === note.id) {
-              // I had problem here. I never return things damn
-              return returnedNote
-            } else {
-              return x
-            }
-          })
-        )
-      })
-      // catch method was added but i don't why it is talking about deleting and that too in when we should be talking about updating. Can't just understand the lines after this
-      .catch((error) => {
-        setErrorMessage(
-          `Note ${note.content} was already removed from the server`
-        )
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-        setNotes(notes.filter((n) => n.id !== note.id))
-      })
+  const toggleImportance = (id, notee) => {
+    let newNotee = { ...notee, important: !notee.important }
+    noteService.update(id, newNotee).then((res) => {
+      setNotes(
+        notes.map((note) => {
+          if (note.id === id) {
+            return newNotee
+          } else {
+            return note
+          }
+        })
+      )
+    })
   }
 
   const handleNoteChange = (event) => {
@@ -81,7 +68,7 @@ const App = () => {
           <Note
             key={note.id}
             note={note}
-            toggleImportance={() => toggleImportance(note)}
+            toggleImportance={() => toggleImportance(note.id, note)}
           />
         ))}
       </ul>

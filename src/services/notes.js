@@ -1,6 +1,6 @@
 import axios from 'axios'
 // const baseUrl = 'https://afternoon-brook-77204.herokuapp.com/api/notes'
-const baseUrl = 'http://localhost:3001/api/notes'
+const baseUrl = 'http://localhost:5000/notes'
 
 const getAll = () => {
   const request = axios.get(baseUrl)
@@ -13,8 +13,9 @@ const create = (newObject) => {
 }
 
 const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
-  return request.then((response) => response.data)
+  return axios
+    .put(`${baseUrl}/${id}`, newObject)
+    .then((response) => response.data)
 }
 
 export default {
